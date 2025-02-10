@@ -6,16 +6,20 @@ import { dirname, join, resolve } from 'node:path';
 import bootstrap from './src/main.server';
 import multer from 'multer';
 import fs from 'fs';
+import compression from 'compression'
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
   const server = express();
+
   const serverDistFolder = dirname(fileURLToPath(import.meta.url));
   const browserDistFolder = resolve(serverDistFolder, '../browser');
   const indexHtml = join(serverDistFolder, 'index.server.html');
 
   const commonEngine = new CommonEngine();
 
+  server.use(compression());
+  
 // Set up Multer for File Uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
