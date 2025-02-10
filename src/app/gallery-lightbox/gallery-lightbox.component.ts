@@ -8,29 +8,28 @@ export interface Item {
 }
 
 @Component({
-  selector: 'app-gallery-lightbox',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './gallery-lightbox.component.html',
-  styleUrl: './gallery-lightbox.component.css',
-  animations: [
-    trigger('animation', [
-      transition('void => visible', [
-        style({ transform: 'scale(0.5)' }),
-        animate('150ms', style({ transform: 'scale(1)' }))
-      ]),
-      transition('visible => void', [
-        style({ transform: 'scale(1)' }),
-        animate('150ms', style({ transform: 'scale(0.5)' }))
-      ])
-    ]),
-    trigger('animation2', [
-      transition(':leave', [
-        style({ opacity: 1 }),
-        animate('50ms', style({ opacity: 0.8 }))
-      ])
-    ])
-  ],
+    selector: 'app-gallery-lightbox',
+    imports: [CommonModule],
+    templateUrl: './gallery-lightbox.component.html',
+    styleUrl: './gallery-lightbox.component.css',
+    animations: [
+        trigger('animation', [
+            transition('void => visible', [
+                style({ transform: 'scale(0.5)' }),
+                animate('150ms', style({ transform: 'scale(1)' }))
+            ]),
+            transition('visible => void', [
+                style({ transform: 'scale(1)' }),
+                animate('150ms', style({ transform: 'scale(0.5)' }))
+            ])
+        ]),
+        trigger('animation2', [
+            transition(':leave', [
+                style({ opacity: 1 }),
+                animate('50ms', style({ opacity: 0.8 }))
+            ])
+        ])
+    ]
 })
 
 export class GalleryLightboxComponent implements OnInit {

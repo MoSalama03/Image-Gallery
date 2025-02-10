@@ -2,11 +2,10 @@ import { Component } from '@angular/core';
 import { GalleryLightboxComponent, Item } from "../gallery-lightbox/gallery-lightbox.component";
 
 @Component({
-  selector: 'app-home',
-  standalone: true,
-  imports: [GalleryLightboxComponent],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+    selector: 'app-home',
+    imports: [GalleryLightboxComponent],
+    templateUrl: './home.component.html',
+    styleUrl: './home.component.css'
 })
 export class HomeComponent {
 

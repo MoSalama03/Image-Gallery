@@ -6,11 +6,10 @@ import { FileUploader } from 'ng2-file-upload'
 import { HttpClient } from '@angular/common/http';
 
 @Component({
-  selector: 'app-image-uploader',
-  standalone: true,
-  imports: [CommonModule, FileUploadModule, ReactiveFormsModule],
-  templateUrl: './image-uploader.component.html',
-  styleUrl: './image-uploader.component.css'
+    selector: 'app-image-uploader',
+    imports: [CommonModule, FileUploadModule, ReactiveFormsModule],
+    templateUrl: './image-uploader.component.html',
+    styleUrl: './image-uploader.component.css'
 })
 export class ImageUploaderComponent {
   public uploader: FileUploader = new FileUploader({
