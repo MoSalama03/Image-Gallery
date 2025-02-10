@@ -1,0 +1,30 @@
+.side-nav {
+  height: 100vh;
+  height: 100dvh;
+  width: 10rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  background-color: #f3f3f3f3;
+  opacity: 0.75;
+
+  .side-nav-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-top: .4rem;
+    margin: 0 10px;
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  & :nth-child(2) {
+    margin-top: 85vh;
+  }
+}
+
+.active {
+  color: blue;
+}

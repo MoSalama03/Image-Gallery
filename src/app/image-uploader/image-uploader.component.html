@@ -1,0 +1,33 @@
+<section>
+  <h3>Upload an Image</h3>
+  <div>
+    <input type="file" ng2FileSelect [uploader]="uploader" (change)="onFileChange($event)" />
+    <button (click)="onSubmit()" [disabled]="!uploader.getNotUploadedItems().length">
+      Upload
+    </button>
+  </div>
+</section>
+
+<!-- Image Preview -->
+@if (imagePreview) {
+<section>
+  <h4>Preview:</h4>
+  <img [src]="imagePreview" alt="Preview" style="max-width: 100%; height: auto;" />
+</section>
+}
+
+<!-- Display uploaded files -->
+@if (uploader.queue.length > 0) {
+<section>
+  <h4>Uploaded Files:</h4>
+
+  @for (item of uploader.queue; track item.file) {
+
+  <ul>
+    <li>
+      {{ item.file.name }} ({{ item.file.size / 1024 | number: '1.2-2' }} KB)
+    </li>
+  </ul>
+  }
+</section>
+}
