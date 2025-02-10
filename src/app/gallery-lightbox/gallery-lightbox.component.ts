@@ -9,6 +9,7 @@ export interface Item {
 
 @Component({
     selector: 'app-gallery-lightbox',
+    standalone: true,
     imports: [CommonModule],
     templateUrl: './gallery-lightbox.component.html',
     styleUrl: './gallery-lightbox.component.css',

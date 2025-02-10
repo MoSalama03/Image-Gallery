@@ -3,6 +3,7 @@ import { GalleryLightboxComponent, Item } from "../gallery-lightbox/gallery-ligh
 
 @Component({
     selector: 'app-home',
+    standalone: true,
     imports: [GalleryLightboxComponent],
     templateUrl: './home.component.html',
     styleUrl: './home.component.css'

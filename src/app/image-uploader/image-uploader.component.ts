@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms' ;
+import { FormBuilder, FormGroup } from '@angular/forms' ;
 import { FileUploadModule } from 'ng2-file-upload';
 import { FileUploader } from 'ng2-file-upload'
 import { HttpClient } from '@angular/common/http';
 
 @Component({
     selector: 'app-image-uploader',
-    imports: [CommonModule, FileUploadModule, ReactiveFormsModule],
+    standalone: true,
+    imports: [CommonModule, FileUploadModule],
     templateUrl: './image-uploader.component.html',
     styleUrl: './image-uploader.component.css'
 })
@@ -22,6 +23,7 @@ export class ImageUploaderComponent {
   public imagePreview: string | ArrayBuffer | null = null;  
 
   constructor(private http: HttpClient, private fb: FormBuilder) {
+
     this.uploader.onAfterAddingFile = (file) => {
       file.withCredentials = false; // Set to true if your API requires credentials
       // Set the file name in the custom header
