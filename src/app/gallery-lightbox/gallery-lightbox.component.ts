@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ImageService } from '../services/image.service';
+import { NgOptimizedImage } from '@angular/common';
 import { animate, style, transition, trigger, AnimationEvent } from '@angular/animations';
 
 export interface Item {
@@ -10,8 +11,7 @@ export interface Item {
 
 @Component({
     selector: 'app-gallery-lightbox',
-    standalone: true,
-    imports: [CommonModule],
+    imports: [CommonModule, NgOptimizedImage],
     templateUrl: './gallery-lightbox.component.html',
     styleUrl: './gallery-lightbox.component.css',
     animations: [

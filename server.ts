@@ -62,7 +62,7 @@ export function app(): express.Express {
       }
 
       // Filter out non-image files (optional)
-      const imageFiles = files.filter((file) => /\.(jpg|jpeg|png|gif|jfif)$/i.test(file));
+      const imageFiles = files.filter((file) => /\.(jpg|jpeg|png|gif|jfif|avif)$/i.test(file));
       res.json(imageFiles); // Send the list of image filenames as JSON
       return
     });

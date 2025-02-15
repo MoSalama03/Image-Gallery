@@ -2,7 +2,7 @@
   <div class="gallery">
     @for (data of galleryData; track $index) {
     <div class="gallery-img">
-      <img (click)="onPreviewImage($index)" [src]="data.imageSrc" [alt]="data.imageAlt">
+      <img (click)="onPreviewImage($index)" [ngSrc]="data.imageSrc" [alt]="data.imageAlt" width="975" height="581">
     </div>
     }
 
@@ -29,7 +29,7 @@
       }
       @if (previewImage) {
       <div [@animation]="{value: 'visible'}" (@animation.done)="onAnimationEnd($event)" class="lightbox-img">
-        <img [src]="currentlightBoxImage.imageSrc" [alt]="currentlightBoxImage.imageAlt">
+        <img [ngSrc]="currentlightBoxImage.imageSrc" [alt]="currentlightBoxImage.imageAlt" width="950" height="571">
       </div>
       }
     </div>
