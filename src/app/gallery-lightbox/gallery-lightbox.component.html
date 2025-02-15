@@ -2,7 +2,8 @@
   <div class="gallery">
     @for (data of galleryData; track $index) {
     <div class="gallery-img">
-      <img (click)="onPreviewImage($index)" [ngSrc]="data.imageSrc" [alt]="data.imageAlt" width="975" height="581">
+      <img (click)="onPreviewImage($index)" [ngSrc]="data.imageSrc" [alt]="data.imageAlt" [width]="data.imageWidth"
+        [height]="data.imageHeight">
     </div>
     }
 

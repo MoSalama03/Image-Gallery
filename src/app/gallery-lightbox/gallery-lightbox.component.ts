@@ -7,6 +7,8 @@ import { animate, style, transition, trigger, AnimationEvent } from '@angular/an
 export interface Item {
   imageSrc: string;
   imageAlt: string;
+  imageWidth: number;
+  imageHeight: number;
 }
 
 @Component({

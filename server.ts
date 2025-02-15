@@ -2,10 +2,11 @@ import { APP_BASE_HREF } from '@angular/common';
 import { CommonEngine } from '@angular/ssr/node';
 import express from 'express';
 import { fileURLToPath } from 'node:url';
-import { dirname, join, resolve } from 'node:path';
+import path, { dirname, join, resolve } from 'node:path';
 import bootstrap from './src/main.server';
 import multer from 'multer';
 import fs from 'fs';
+import sizeOf from 'image-size'
 import cors from 'cors';
 import compression from 'compression';
 
@@ -62,9 +63,17 @@ export function app(): express.Express {
       }
 
       // Filter out non-image files (optional)
-      const imageFiles = files.filter((file) => /\.(jpg|jpeg|png|gif|jfif|avif)$/i.test(file));
-      res.json(imageFiles); // Send the list of image filenames as JSON
-      return
+      const imageData = files.filter((file) => /\.(jpg|jpeg|png|gif|jfif|avif)$/i.test(file))
+      .map((file) => {
+        const dimensions = sizeOf(path.join(uploadsDir, file));
+        return {
+          name: file,
+          width: dimensions.width,
+          height: dimensions.height,
+        };
+      });
+
+      res.json(imageData);
     });
   });
 
