@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GalleryLightboxComponent, Item } from "../gallery-lightbox/gallery-lightbox.component";
 import { ImageService } from '../services/image.service';
+import { findLargestImageIndex } from '../shared/image.utils';
 
 @Component({
     selector: 'app-home',
@@ -50,7 +51,11 @@ export class HomeComponent implements OnInit {
           },
           (error) => {
             console.error('Error uploading image:', error);
-          }
-        );
-      }
+          });
+
+        }
+
+         findLargestImageIndex(): number {
+            return findLargestImageIndex(this.data);
+        }
     }

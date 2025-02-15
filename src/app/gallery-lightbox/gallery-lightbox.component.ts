@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ImageService } from '../services/image.service';
 import { NgOptimizedImage } from '@angular/common';
+import { findLargestImageIndex } from '../shared/image.utils';
 import { animate, style, transition, trigger, AnimationEvent } from '@angular/animations';
 
 export interface Item {
@@ -86,5 +87,9 @@ export class GalleryLightboxComponent implements OnInit {
       this.currentIndex = this.galleryData.length;
     }
     this.currentlightBoxImage = this.galleryData[this.currentIndex];
+  }
+
+  findLargestImageIndex(): number {
+    return findLargestImageIndex(this.galleryData)
   }
 }

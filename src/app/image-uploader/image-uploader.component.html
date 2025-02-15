@@ -1,7 +1,7 @@
 <section>
   <h3>Upload an Image</h3>
   <div>
-    <input type="file" ng2FileSelect [uploader]="uploader" (change)="onFileChange($event)" accept="image/*" multiple />
+    <input type="file" ng2FileSelect [uploader]="uploader" (change)="onFileChange($event)" accept="image/*" />
     <button (click)="onSubmit()" [disabled]="!uploader.getNotUploadedItems().length">
       Upload
     </button>

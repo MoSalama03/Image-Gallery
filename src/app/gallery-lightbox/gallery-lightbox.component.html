@@ -1,9 +1,9 @@
 <section class="gallery-lightbox-container">
   <div class="gallery">
-    @for (data of galleryData; track $index) {
+    @for (data of galleryData; track $index; let i = $index) {
     <div class="gallery-img">
       <img (click)="onPreviewImage($index)" [ngSrc]="data.imageSrc" [alt]="data.imageAlt" [width]="data.imageWidth"
-        [height]="data.imageHeight">
+        [height]="data.imageHeight" [priority]="i === findLargestImageIndex()">
     </div>
     }
 
