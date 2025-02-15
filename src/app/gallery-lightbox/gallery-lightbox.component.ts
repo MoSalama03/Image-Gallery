@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ImageService } from '../services/image.service';
 import { animate, style, transition, trigger, AnimationEvent } from '@angular/animations';
 
 export interface Item {
@@ -36,16 +37,20 @@ export interface Item {
 export class GalleryLightboxComponent implements OnInit {
   @Input() galleryData: Item[] = [];
   @Input() showCount: boolean = false
-
+  
   previewImage: boolean = false;
   showMask: boolean = false;
   currentlightBoxImage: Item = this.galleryData[0];
   currentIndex: number = 0;
   controls: boolean = true
   totalImageCount: number = 0;
+  
+  constructor(private imageService: ImageService) {
 
+  }
+  
   ngOnInit(): void {
-    this.totalImageCount =this.galleryData.length;
+    this.totalImageCount = this.galleryData.length;
   }
 
   onPreviewImage(index: number): void {

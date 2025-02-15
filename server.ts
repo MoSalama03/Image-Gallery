@@ -6,7 +6,8 @@ import { dirname, join, resolve } from 'node:path';
 import bootstrap from './src/main.server';
 import multer from 'multer';
 import fs from 'fs';
-import compression from 'compression'
+import cors from 'cors';
+import compression from 'compression';
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
@@ -18,46 +19,69 @@ export function app(): express.Express {
 
   const commonEngine = new CommonEngine();
 
+  // Middleware
   server.use(compression());
-  
-// Set up Multer for File Uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const uploadDir = 'uploads';
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir);
+  server.use(cors()); // Enable CORS for all routes
+
+  // Set up Multer for File Uploads
+  const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      const uploadDir = 'uploads';
+      if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir);
+      }
+      cb(null, uploadDir);
+    },
+    filename: (req, file, cb) => {
+      cb(null, Date.now() + '-' + file.originalname);
+    },
+  });
+
+  const upload = multer({ storage });
+
+  // File upload endpoint
+  server.post('/upload', upload.single('image'), (req, res) => {
+    if (!req.file) {
+      return res.status(400).json({ message: 'No file uploaded!' });
     }
-    cb(null, uploadDir)
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname);
-  },
-});
 
-const upload = multer({ storage })
+    const fileUrl = `/uploads/${req.file.filename}`; // Return the file URL
+    return res.json({ message: 'File uploaded successfully!', file: req.file, fileUrl });
+  });
 
-// File upload endpoint
-server.post('/upload', upload.single('image'), (req, res) => {
-  if(!req.file) {
-    return res.status(400).json({ message: 'no file uploaded!' });
-  }
-  return  res.json({ message: 'file uploaded successfully!', file: req.file })
-});
+  // Serve static files from the uploads folder
+  server.use('/uploads', express.static('uploads'));
 
-  server.set('view engine', 'html');
-  server.set('views', browserDistFolder);
+  // Endpoint to get the list of image filenames
+  server.get('/api/images', (req, res) => {
+    const uploadsDir = 'uploads';
 
-  // Example Express Rest API endpoints
-  // server.get('/api/**', (req, res) => { });
+    fs.readdir(uploadsDir, (err, files) => {
+      if (err) {
+        return res.status(500).json({ error: 'Unable to read uploads directory' });
+      }
+
+      // Filter out non-image files (optional)
+      const imageFiles = files.filter((file) => /\.(jpg|jpeg|png|gif|jfif)$/i.test(file));
+      res.json(imageFiles); // Send the list of image filenames as JSON
+      return
+    });
+  });
+
   // Serve static files from /browser
   server.get('**', express.static(browserDistFolder, {
     maxAge: '1y',
     index: 'index.html',
   }));
 
-  // All regular routes use the Angular engine
+  // All other routes use the Angular engine
   server.get('**', (req, res, next) => {
     const { protocol, originalUrl, baseUrl, headers } = req;
+
+    // Skip API routes and static files
+    if (originalUrl.startsWith('/api') || originalUrl.startsWith('/uploads')) {
+      return next();
+    }
 
     commonEngine
       .render({
