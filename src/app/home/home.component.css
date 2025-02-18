@@ -1,0 +1,13 @@
+::ng-deep .loading-placeholder {
+  padding: 20px;
+  text-align: center;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.error-message {
+  padding: 20px;
+  text-align: center;
+  font-size: 1.2rem;
+  color: red;
+}

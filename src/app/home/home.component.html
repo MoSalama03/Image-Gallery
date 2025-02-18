@@ -1,1 +1,7 @@
+@defer (on timer(2s)) {
 <app-gallery-lightbox [galleryData]="data" [showCount]="true"></app-gallery-lightbox>
+} @placeholder {
+<div class="loading-placeholder">Loading gallery in 2 seconds...</div>
+} @error {
+<div class="error-message">Failed to load gallery.</div>
+}
