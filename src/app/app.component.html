@@ -1,8 +1,19 @@
-<article class="side-nav">
+<!-- Hamburger Menu -->
+@if (!isSideNavOpen) {
+<button class="hamburger-menu" (click)="toggleSideNav()">
+  <i class="fa-solid fa-bars"></i>
+</button>
+}
+
+<!-- Side Navigation -->
+<article class="side-nav" [class.open]="isSideNavOpen">
   <ul class="side-nav-container">
-    <li><a [routerLink]="['/']" [routerLinkActive]="['active']">Home</a></li>
-    <li><a [routerLink]="['/upload']">Upload image</a>
-    </li>
+    <li><a [routerLink]="['/']" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{ exact: true }">Home</a></li>
+    <li><a [routerLink]="['/upload']" [routerLinkActive]="['active']">Upload Image</a></li>
+    <button class="close-btn" (click)="toggleSideNav()">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
   </ul>
 </article>
+
 <router-outlet></router-outlet>

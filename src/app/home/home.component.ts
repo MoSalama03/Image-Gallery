@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GalleryLightboxComponent, Item } from "../gallery-lightbox/gallery-lightbox.component";
 import { ImageService } from '../services/image.service';
-import { findLargestImageIndex } from '../shared/image.utils';
 
 @Component({
     selector: 'app-home',
@@ -38,24 +37,27 @@ export class HomeComponent implements OnInit {
       }
 
     // Upload the selected file
-    uploadImage(file: File): void {
-        this.imageService.uploadImage(file).subscribe(
-          (response) => {
-            const newImage: Item = {
-              imageSrc: `http://localhost:3000${response.fileUrl}`,
-              imageAlt: `Uploaded Image`,
+    uploadImages(files: File[]): void {
+      const formData = new FormData();
+      files.forEach((file) => {
+        formData.append('images', file);
+      });
+
+
+      this.imageService.uploadImages(formData).subscribe(
+        (response) => {
+          console.log('Files uploaded successfully:', response);
+           response.fileUrls.forEach((fileUrl) => {
+            this.data.push({
+              imageSrc: `http://localhost:3000${fileUrl}`,
+              imageAlt: `Uploaded Images`,
               imageWidth: response.width,
               imageHeight: response.height,
-            };
-            this.data.push(newImage); // Push the new image into the data array
+            });
+          });
           },
           (error) => {
-            console.error('Error uploading image:', error);
+            console.error('Error uploading images:', error);
           });
-
-        }
-
-         findLargestImageIndex(): number {
-            return findLargestImageIndex(this.data);
         }
     }

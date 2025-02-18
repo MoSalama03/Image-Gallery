@@ -1,33 +1,46 @@
-<section>
+<section class="upload-section">
   <h3>Upload an Image</h3>
-  <div>
-    <input type="file" ng2FileSelect [uploader]="uploader" (change)="onFileChange($event)" accept="image/*" />
-    <button (click)="onSubmit()" [disabled]="!uploader.getNotUploadedItems().length">
+  <div class="upload-controls">
+    <input type="file" class="file-input" ng2FileSelect [uploader]="uploader" accept="image/*" multiple />
+    <button class="btn upload-btn" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
       Upload
+    </button>
+    <button class="btn clear-btn" (click)="clearQueue()" [disabled]="!uploader.queue.length">
+      Clear Queue
     </button>
   </div>
 </section>
 
-<!-- Image Preview -->
-@if (imagePreview) {
-<section>
+@if (imagePreviews && imagePreviews.length > 0) {
+<section class="preview-section">
   <h4>Preview:</h4>
-  <img [src]="imagePreview" alt="Preview" style="max-width: 25%; height: auto;" />
+  <div class="preview-container">
+    @for (preview of imagePreviews; let i = $index; track preview) {
+    <img [src]="preview" alt="Preview {{ i + 1 }}" class="preview-image" />
+    }
+  </div>
 </section>
 }
 
-<!-- Display uploaded files -->
 @if (uploader.queue.length > 0) {
-<section>
+<section class="uploaded-files-section">
   <h4>Uploaded Files:</h4>
-
-  @for (item of uploader.queue; track item.file) {
-
-  <ul>
-    <li>
-      {{ item.file.name }} ({{ item.file.size / 1024 | number: '1.2-2' }} KB)
+  <ul class="file-list">
+    @for (item of uploader.queue; track item; let i = $index;) {
+    <li class="file-item">
+      <span class="file-name">{{ item.file.name }}</span>
+      <span class="file-size">({{ item.file.size / 1024 | number: '1.2-2' }} KB)</span>
+      @if (item.isSuccess) {
+      <span class="status-success">Uploaded!</span>
+      }
+      @if (item.isError) {
+      <span class="status-error">Upload Failed!</span>
+      }
+      @if (item.isUploading) {
+      <span class="status-uploading">Uploading...</span>
+      }
     </li>
+    }
   </ul>
-  }
 </section>
 }

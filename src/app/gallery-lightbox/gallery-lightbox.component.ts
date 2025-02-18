@@ -1,6 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ImageService } from '../services/image.service';
 import { NgOptimizedImage } from '@angular/common';
 import { findLargestImageIndex } from '../shared/image.utils';
 import { animate, style, transition, trigger, AnimationEvent } from '@angular/animations';
@@ -48,11 +47,18 @@ export class GalleryLightboxComponent implements OnInit {
   controls: boolean = true
   totalImageCount: number = 0;
   
-  constructor(private imageService: ImageService) {
-
-  }
-  
   ngOnInit(): void {
+    this.totalImageCount = this.galleryData.length;
+    this.updateTotalImageCount();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['galleryData']) {
+      this.updateTotalImageCount();
+    }
+  }
+
+  private updateTotalImageCount(): void {
     this.totalImageCount = this.galleryData.length;
   }
 
@@ -82,9 +88,9 @@ export class GalleryLightboxComponent implements OnInit {
   }
 
   prev(): void {
-    this.currentIndex = this.currentIndex -1;
+    this.currentIndex = this.currentIndex - 1;
     if (this.currentIndex < 0) {
-      this.currentIndex = this.galleryData.length;
+      this.currentIndex = this.galleryData.length - 1;
     }
     this.currentlightBoxImage = this.galleryData[this.currentIndex];
   }

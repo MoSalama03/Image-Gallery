@@ -11,11 +11,8 @@ export class ImageService {
   constructor(private http: HttpClient) {}
 
   // Upload an image
-  uploadImage(file: File): Observable<{ fileUrl: string; width: number; height: number }> {
-    const formData = new FormData();
-    formData.append('image', file);
-
-    return this.http.post<{ fileUrl: string; width: number; height: number }>(`${this.apiUrl}/upload`, formData);
+  uploadImages(formData: FormData): Observable<{ files: any[] ; fileUrls: string[]; width: number; height: number }> {
+    return this.http.post<{ files: any[]; fileUrls: string[]; width: number; height: number }>(`${this.apiUrl}/upload`, formData);
   }
 
   // Fetch the list of images

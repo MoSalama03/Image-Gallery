@@ -1,12 +1,12 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { CommonEngine } from '@angular/ssr/node';
-import express from 'express';
+import express, { Response, Request } from 'express';
 import { fileURLToPath } from 'node:url';
 import path, { dirname, join, resolve } from 'node:path';
 import bootstrap from './src/main.server';
 import multer from 'multer';
 import fs from 'fs';
-import sizeOf from 'image-size'
+import { imageSize } from 'image-size';
 import cors from 'cors';
 import compression from 'compression';
 
@@ -26,14 +26,14 @@ export function app(): express.Express {
 
   // Set up Multer for File Uploads
   const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
+    destination: (req: Request, file, cb: (error: Error | null, destination: string) => void) => {
       const uploadDir = 'uploads';
       if (!fs.existsSync(uploadDir)) {
         fs.mkdirSync(uploadDir);
       }
       cb(null, uploadDir);
     },
-    filename: (req, file, cb) => {
+    filename: (req: Request, file, cb: (error: Error | null, filename: string) => void) => {
       cb(null, Date.now() + '-' + file.originalname);
     },
   });
@@ -41,13 +41,26 @@ export function app(): express.Express {
   const upload = multer({ storage });
 
   // File upload endpoint
-  server.post('/upload', upload.single('image'), (req, res) => {
-    if (!req.file) {
-      return res.status(400).json({ message: 'No file uploaded!' });
+  server.post('/upload', upload.array('images', 10), (req: Request, res: Response) => {
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ message: 'No files uploaded!' });
     }
 
-    const fileUrl = `/uploads/${req.file.filename}`; // Return the file URL
-    return res.json({ message: 'File uploaded successfully!', file: req.file, fileUrl });
+    const fileUrls: string[] = []; // Type the array
+
+    if (Array.isArray(req.files)) { // Type guard to ensure it's an array
+        req.files.forEach(file => {
+            fileUrls.push(`/uploads/${file.filename}`);
+        });
+    } else {
+        for (const field in req.files) {
+            req.files[field].forEach(file => {
+                fileUrls.push(`/uploads/${file.filename}`);
+            });
+        }
+    }
+    
+    return res.json({ message: 'Files uploaded successfully!', files: req.files, fileUrls });
   });
 
   // Serve static files from the uploads folder
@@ -63,15 +76,16 @@ export function app(): express.Express {
       }
 
       // Filter out non-image files (optional)
-      const imageData = files.filter((file) => /\.(jpg|jpeg|png|gif|jfif|avif)$/i.test(file))
-      .map((file) => {
-        const dimensions = sizeOf(path.join(uploadsDir, file));
-        return {
-          name: file,
-          width: dimensions.width,
-          height: dimensions.height,
-        };
-      });
+      const imageData = files
+        .filter((file) => /\.(jpg|jpeg|png|gif|jfif|avif)$/i.test(file))
+        .map((file) => {
+          const dimensions = imageSize(path.join(uploadsDir, file)); // Use imageSize
+          return {
+            name: file,
+            width: dimensions.width,
+            height: dimensions.height,
+          };
+        });
 
       res.json(imageData);
     });
