@@ -8,6 +8,10 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
+button {
+  all: unset
+}
+
 ul {
   list-style: none;
 }
