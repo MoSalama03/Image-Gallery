@@ -2,8 +2,9 @@
   <div class="gallery">
     @for (data of galleryData; track $index; let i = $index) {
     <div class="gallery-img">
-      <img (click)="onPreviewImage($index)" [ngSrc]="data.imageSrc" [alt]="data.imageAlt" [width]="data.imageWidth"
-        [height]="data.imageHeight" [priority]="i === findLargestImageIndex()">
+      <img (click)="onPreviewImage($index)" [ngSrc]="data.imageSrc" [ngSrcset]="getSrcset(data.imageSrc)"
+        [sizes]="'50vw'" [alt]="data.imageAlt" [width]="data.imageWidth || 413" [height]="data.imageHeight || 619.5"
+        [priority]="i === findLargestImageIndex()">
     </div>
     }
 
@@ -30,7 +31,7 @@
       }
       @if (previewImage) {
       <div [@animation]="{value: 'visible'}" (@animation.done)="onAnimationEnd($event)" class="lightbox-img">
-        <img [ngSrc]="currentlightBoxImage.imageSrc" [alt]="currentlightBoxImage.imageAlt" width="950" height="571">
+        <img [ngSrc]="currentlightBoxImage.imageSrc" width="950" height="571">
       </div>
       }
     </div>

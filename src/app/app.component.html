@@ -1,9 +1,13 @@
 <!-- Hamburger Menu -->
-@if (!isSideNavOpen) {
-<button class="hamburger-menu" (click)="toggleSideNav()">
-  <i class="fa-solid fa-bars"></i>
-</button>
-}
+<header class="app-header">
+  @if (!isSideNavOpen) {
+  <button class="hamburger-menu" (click)="toggleSideNav()">
+    <i class="fa-solid fa-bars"></i>
+  </button>
+  }
+  <app-search-engine></app-search-engine>
+
+</header>
 
 <!-- Side Navigation -->
 <article class="side-nav" [class.open]="isSideNavOpen">

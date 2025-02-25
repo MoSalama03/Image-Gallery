@@ -98,4 +98,9 @@ export class GalleryLightboxComponent implements OnInit {
   findLargestImageIndex(): number {
     return findLargestImageIndex(this.galleryData)
   }
+
+  getSrcset(imageUrl: string, maxWidth: number = 1239): string {
+    const widths = [413, 826, maxWidth];
+    return widths.map(width => `${width}w`).join(', ');
+  }
 }
