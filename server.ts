@@ -77,7 +77,7 @@ export function app(): express.Express {
 
       // Filter out non-image files (optional)
       const imageData = files
-        .filter((file) => /\.(jpg|jpeg|png|gif|jfif|avif)$/i.test(file))
+        .filter((file) => /\.(jpg|jpeg|png|gif|jfif|avif|webp)$/i.test(file))
         .map((file) => {
           const dimensions = imageSize(path.join(uploadsDir, file)); // Use imageSize
           return {
