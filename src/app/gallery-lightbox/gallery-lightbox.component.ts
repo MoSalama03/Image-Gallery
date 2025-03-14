@@ -1,6 +1,7 @@
-import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgOptimizedImage } from '@angular/common';
+import { UserService } from '../services/user.service';
 import { findLargestImageIndex } from '../shared/image.utils';
 import { animate, style, transition, trigger, AnimationEvent } from '@angular/animations';
 
@@ -37,6 +38,7 @@ export interface Item {
 })
 
 export class GalleryLightboxComponent implements OnInit {
+  userService = inject(UserService);
   @Input() galleryData: Item[] = [];
   @Input() showCount: boolean = false
   
@@ -99,7 +101,7 @@ export class GalleryLightboxComponent implements OnInit {
     return findLargestImageIndex(this.galleryData)
   }
 
-  getSrcset(imageUrl: string, maxWidth: number = 1239): string {
+  getSrcset(maxWidth: number = 1239): string {
     const widths = [413, 826, maxWidth];
     return widths.map(width => `${width}w`).join(', ');
   }

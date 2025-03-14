@@ -2,9 +2,9 @@
   <div class="gallery">
     @for (data of galleryData; track $index; let i = $index) {
     <div class="gallery-img">
-      <img (click)="onPreviewImage($index)" [ngSrc]="data.imageSrc" [ngSrcset]="getSrcset(data.imageSrc)"
-        [sizes]="'50vw'" [alt]="data.imageAlt" [width]="data.imageWidth || 413" [height]="data.imageHeight || 619.5"
-        [priority]="i === findLargestImageIndex()">
+      <img (click)="onPreviewImage($index)" [ngSrc]="data.imageSrc" [ngSrcset]="getSrcset()"
+        sizes="(max-width: 600px) 100vw, 50vw" [alt]="data.imageAlt" [width]="data.imageWidth || 413"
+        [height]="data.imageHeight || 619.5" [priority]="i === findLargestImageIndex()">
     </div>
     }
 
