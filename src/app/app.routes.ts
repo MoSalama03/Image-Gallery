@@ -4,5 +4,7 @@ import { ImageUploaderComponent } from './image-uploader/image-uploader.componen
 
 export const routes: Routes = [
   {path: '', title: 'Home', component: HomeComponent},
-  {path: 'upload', title:'Image Uploader' , component: ImageUploaderComponent}
+  {path: 'upload', title:'Image Uploader' ,
+     loadComponent: () => import('./image-uploader/image-uploader.component')
+     .then(c => c.ImageUploaderComponent)}
 ];
