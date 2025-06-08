@@ -22,7 +22,11 @@ export function app(): express.Express {
 
   // Middleware
   server.use(compression());
-  server.use(cors()); // Enable CORS for all routes
+  server.use(cors({
+  origin: ['http://localhost:4200'], // Your Angular app URL
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
   // Set up Multer for File Uploads
   const storage = multer.diskStorage({
